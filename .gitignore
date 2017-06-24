@@ -2,6 +2,6 @@
 .idea
 target
 .mvn
-demo.iml
+Multicoin.iml
 mvnw
 mvnw.cmd
