@@ -29,7 +29,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource(value = { "application.properties" })
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.example.demo.repositories")
+@EnableJpaRepositories(basePackages = "com.webserver.repositories")
 public class PersistenceConfig {
 
     @Autowired
@@ -54,7 +54,7 @@ public class PersistenceConfig {
 
         factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.example.demo.models");
+        factory.setPackagesToScan("com.webserver.models");
 
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));

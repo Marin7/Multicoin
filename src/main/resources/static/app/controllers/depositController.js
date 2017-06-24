@@ -38,6 +38,7 @@
                 var promise = DepositFactory.deposit(transaction);
                 promise.success(function (amount) {
                     $scope.userDollars = $scope.userDollars + amount;
+                    location.reload();
                 }).error(function (data, status) {
                     alert(status);
                 });
@@ -62,6 +63,7 @@
                 var promise = DepositFactory.withdraw(transaction);
                 promise.success(function (amount) {
                     $scope.userDollars = $scope.userDollars + amount;
+                    location.reload();
                 }).error(function (data, status) {
                     alert(status);
                 });
