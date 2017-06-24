@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="angularjs-demo" xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AngularJS DEMO</title>
+
+    <link
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+            rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" cardId="register" href="#/create">Register</a>
+            <a class="navbar-brand" cardId="login" href="#/login">Login</a>
+            <a class="navbar-brand" cardId="logout" href="#/logout">Logout</a>
+            <a class="navbar-brand" cardId="coin" href="#/coin">Coin</a>
+            <a class="navbar-brand" cardId="deposit" href="#/deposit">Deposit/Withdraw</a>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="container">
+    <div ng-view=""></div>
+</div>
+
+<!-- LIBS -->
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-route.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-chart/0.1.0/ng-google-chart.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- APP -->
+<script src="app/config/app.js"></script>
+<script src="app/config/config.js"></script>
+<!-- CONTROLLERS -->
+<script src="app/controllers/navControllers.js"></script>
+<script src="app/controllers/userControllers.js"></script>
+<script src="app/controllers/coinControllers.js"></script>
+<script src="app/controllers/depositController.js"></script>
+<!-- SERVICES -->
+<script src="app/services/userService.js"></script>
+<script src="app/services/coinService.js"></script>
+<script src="app/services/depositService.js"></script>
+
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        var loggedOn = sessionStorage.getItem('loggedOn');
+        if (loggedOn === "true") {
+            $('#register').css("display", "none");
+            $('#login').css("display", "none");
+            $('#logout').css("display", "block");
+            $('#deposit').css("display", "block");
+        } else {
+            $('#logout').css("display", "none");
+            $('#deposit').css("display", "none");
+            $('#register').css("display", "block");
+            $('#login').css("display", "block");
+        }
+    });
+</script>

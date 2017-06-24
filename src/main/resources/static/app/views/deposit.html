@@ -1,0 +1,20 @@
+<div ng-controller="DepositController">
+
+    <br>
+    <form>
+        You've currently deposited: {{userDollars}} dollars<br>
+    </form>
+    <br>
+    <form><br>
+        Introduce the credit card information:<br>
+        Number: <input type="number" cardId="cardId" ng-model="cardId"><br>
+        Owner: <input type="text" cardId="cardOwner" ng-model="cardOwner"><br>
+        Expiration Month: <input type="number" cardId="expMonth" ng-model="expMonth"><br>
+        Expiration Year: <input type="number", cardId="expYear" ng-model="expYear"><br>
+        CCT: <input type="number" cardId="cct", ng-model="cct"><br><br><br>
+        Introduce the amount of money to deposit/withdraw: <input type="number" step="0.01" min="0" cardId="deposit" ng-model="amount"><br>
+        <button ng-click="depositDollars()">DEPOSIT</button>
+        <button ng-click="withdrawDollars()">WITHDRAW</button>
+    </form>
+
+</div>
