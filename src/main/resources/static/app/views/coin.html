@@ -1,5 +1,9 @@
 <div ng-controller="CoinController">
 
+    <form>
+        You currently own approx. {{userCoins}} coins <br>
+        You currently have deposited {{userDollars}} dollars <br>
+    </form>
     <br>
     <form>
         Prices<br>
@@ -8,8 +12,13 @@
     </form>
     <br>
     <form>
-        Introduce the amount:<input type="number" step="0.01" min="0" cardId="inputName1" ng-model="amount"><br>
+        Introduce the amount of dollars to spend :<input type="number" step="0.01" min="0" ng-model="amountDollars"><br>
         <button ng-click="buy()">BUY</button>
+
+    </form>
+    <br>
+    <form>
+        Introduce the amount of Multicoins you wish to sell: <input type="number" step="0.00001" min="0" ng-model="amountMulticoins"><br>
         <button ng-click="sell()">SELL</button>
     </form>
 

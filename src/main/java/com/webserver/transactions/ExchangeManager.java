@@ -1,4 +1,4 @@
-package com.webserver.services;
+package com.webserver.transactions;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpEntity;
@@ -13,6 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,18 +28,12 @@ import java.util.List;
 /**
  * Created by Marin on 5/31/2017.
  */
+@Component
 public class ExchangeManager {
 
-    private final String key;
-    private final String secret;
+    private static final String key = "DAA9AD52FD11E65D8C1131FF323363CE";
+    private static final String secret = "5FB0EDB6FAADF61C058912D07C05FA05";
     private final List<String> coins = Arrays.asList("btc", "ltc");
-    private long nonce;
-
-    public ExchangeManager(String key, String secret) {
-        this.key = key;
-        this.secret = secret;
-        nonce = 1;
-    }
 
     public void buyCoins(double amount) {
         for (String coin : coins) {
@@ -90,7 +85,7 @@ public class ExchangeManager {
 
     private String getDepositAddress(String coin) throws InvalidKeyException, NoSuchAlgorithmException, IOException, JSONException {
         String url = "https://yobit.net/tapi/";
-        String queryArgs = "method=GetDepositAddress&coinName=" + coin + "&nonce=" + nonce++;
+        String queryArgs = "method=GetDepositAddress&coinName=" + coin + "&nonce=" + Long.toString(System.currentTimeMillis());
         String sign = hmac512Digest(queryArgs);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -101,7 +96,7 @@ public class ExchangeManager {
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("method", "GetDepositAddress"));
         params.add(new BasicNameValuePair("coinName", coin));
-        params.add(new BasicNameValuePair("nonce", Long.toString(nonce)));
+        params.add(new BasicNameValuePair("nonce", Long.toString(System.currentTimeMillis())));
         post.setEntity(new UrlEncodedFormEntity(params));
 
         CloseableHttpResponse response = httpClient.execute(post);
@@ -120,5 +115,13 @@ public class ExchangeManager {
         shaMac.init(keySpec);
         final byte[] macData = shaMac.doFinal(queryArgs.getBytes());
         return Hex.encodeHexString(macData);
+    }
+
+    public double getBuyPrice() {
+        return 0.95;
+    }
+
+    public double getSellPrice() {
+        return 1.05;
     }
 }

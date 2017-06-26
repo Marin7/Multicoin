@@ -2,8 +2,11 @@ package com.webserver.controllers;
 
 import com.webserver.domain.UserDTO;
 import com.webserver.services.UserService;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -14,7 +17,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public UserDTO getUser(@PathVariable("id") int userId) {
+	public UserDTO getUser(@PathVariable("id") int userId) throws IOException, JSONException {
 	    return userService.findUserById(userId);
     }
 

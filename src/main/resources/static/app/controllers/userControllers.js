@@ -24,11 +24,13 @@
     usersModule.controller('RegisterUserController', ['$scope', 'UserFactory',
         function ($scope, UserFactory) {
             $scope.register = function () {
-                $scope.card = {
+                $scope.user = {
                     "username": $scope.username,
                     "email": $scope.email,
                     "password": $scope.password
                 };
+
+                console.debug($scope.user);
 
                 var promise = UserFactory.register($scope.user);
                 promise.success(function (data) {

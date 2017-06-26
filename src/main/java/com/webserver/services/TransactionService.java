@@ -1,18 +1,19 @@
 package com.webserver.services;
 
-import com.webserver.domain.TransactionDTO;
-import com.webserver.exceptions.UserException;
+import com.webserver.domain.CreditCardTransactionDTO;
+import com.webserver.domain.MulticoinTransactionDTO;
 import com.webserver.models.User;
+import com.webserver.multichain.MultichainManager;
 import com.webserver.repositories.UserRepository;
+import com.webserver.transactions.ExchangeManager;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Marin on 6/24/2017.
+ * Created by Marin on 6/26/2017.
  */
 @Service
 public class TransactionService {
@@ -20,40 +21,39 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository;
 
-    private final TransferManager transferManager = new TransferManager();
+    @Autowired
+    private ExchangeManager exchangeManager;
 
-    public void depositMoney(TransactionDTO transactionDTO) {
-        User user = userRepository.findById(transactionDTO.getUserId());
-        if (user == null) {
-            throw new UserException("No user with id: " + transactionDTO.getUserId());
-        }
-        if (transferManager.transferMoneyFromCreditCard(transactionDTO.getCard(), transactionDTO.getAmount())) {
-            buyCoins(transactionDTO.getAmount());
-            user.setDollars(user.getDollars() + transactionDTO.getAmount());
-            userRepository.save(user);
-        }
-    }
+    @Autowired
+    private MultichainManager multichainManager;
 
-    public void withdrawMoney(TransactionDTO transactionDTO) {
-        User user = userRepository.findById(transactionDTO.getUserId());
-        if (user == null) {
-            throw new UserException("No user with id: " + transactionDTO.getUserId());
+    public void buy(MulticoinTransactionDTO multicoinTransactionDTO) {
+        User user = userRepository.findById(multicoinTransactionDTO.getUserId());
+        double amount = multicoinTransactionDTO.getAmount();
+        if (user.getDollars() < amount) {
+            throw new RuntimeException("User doesn't have enough funds");
         }
-        if (transferManager.transferMoneyToCreditCard(transactionDTO.getCard(), transactionDTO.getAmount())) {
-            sellCoins(transactionDTO.getAmount());
-            user.setDollars(user.getDollars() - transactionDTO.getAmount());
-            userRepository.save(user);
-        }
-    }
-
-    private void buyCoins(double amount) {
-        ExchangeManager exchangeManager = new ExchangeManager("DAA9AD52FD11E65D8C1131FF323363CE", "5FB0EDB6FAADF61C058912D07C05FA05");
+        double price = exchangeManager.getBuyPrice();
+        double multicoins = price * amount;
         exchangeManager.buyCoins(amount);
+        user.setDollars(user.getDollars() - amount);
+        userRepository.save(user);
+        multichainManager.sendMulticoinsToAddress(user.getMulticoinAddress(), multicoins);
     }
 
-    private void sellCoins(double amount) {
-        ExchangeManager exchangeManager = new ExchangeManager("DAA9AD52FD11E65D8C1131FF323363CE", "5FB0EDB6FAADF61C058912D07C05FA05");
+    public void sell(MulticoinTransactionDTO multicoinTransactionDTO) throws IOException, JSONException {
+        User user = userRepository.findById(multicoinTransactionDTO.getUserId());
+        double amount = multicoinTransactionDTO.getAmount();
+        double currentAmount = multichainManager.getUserBalance(user.getMulticoinAddress());
+        if (amount > currentAmount) {
+            throw new RuntimeException("Not enough Multicoins");
+        }
+        double price = exchangeManager.getSellPrice();
+        double dollars = price * amount;
         exchangeManager.sellCoins(amount);
+        user.setDollars(user.getDollars() + dollars);
+        userRepository.save(user);
+        multichainManager.sendMulticoinsFromAddress(user.getMulticoinAddress(), amount);
     }
 
 }

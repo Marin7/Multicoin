@@ -1,7 +1,7 @@
 package com.webserver.controllers;
 
-import com.webserver.domain.TransactionDTO;
-import com.webserver.services.TransactionService;
+import com.webserver.domain.CreditCardTransactionDTO;
+import com.webserver.services.WithdrawService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class WithdrawController {
 
     @Autowired
-    private TransactionService transactionService;
+    private WithdrawService withdrawService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void withdraw(@RequestBody TransactionDTO transactionDTO) {
-        transactionService.withdrawMoney(transactionDTO);
+    public void withdraw(@RequestBody CreditCardTransactionDTO creditCardTransactionDTO) {
+        withdrawService.withdrawMoney(creditCardTransactionDTO);
     }
 }

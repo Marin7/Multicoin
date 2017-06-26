@@ -10,8 +10,8 @@
         })
     });
 
-    coinModule.controller('CoinController', ['$scope', '$routeParams', 'CoinFactory',
-        function ($scope, $routeParams, CoinFactory) {
+    coinModule.controller('CoinController', ['$scope', '$routeParams', 'CoinFactory', 'UserFactory',
+        function ($scope, $routeParams, CoinFactory, UserFactory) {
             $scope.buyPrice = 0;
             $scope.sellPrice = 0;
             var price = CoinFactory.getLatestPrice();
@@ -22,15 +22,23 @@
                 alert(status);
             });
 
+            var user = UserFactory.findById(sessionStorage.getItem('user_id'));
+            user.success(function (user_data) {
+                $scope.userDollars = user_data.dollars;
+                $scope.userCoins = user_data.coins;
+            }).error(function (data, status) {
+                alert(status);
+            });
+
             $scope.buy = function () {
-                $scope.transaction = {
-                    "coins": $scope.amount,
-                    "side": 'buy',
+                var transaction = {
+                    "amount": $scope.amountDollars,
                     "userId": sessionStorage.getItem('user_id')
                 };
+                console.debug(transaction);
 
-                var exch = CoinFactory.exchange($scope.transaction);
-                exch.success(function () {
+                var buyMC = CoinFactory.buy(transaction);
+                buyMC.success(function () {
                     location.reload();
                 }).error(function (data, status) {
                     alert(status);
@@ -39,13 +47,12 @@
 
             $scope.sell = function () {
                 $scope.transaction = {
-                    "coins": $scope.amount,
-                    "side": 'sell',
+                    "amount": $scope.amountMulticoins,
                     "userId": sessionStorage.getItem('user_id')
                 };
 
-                var exch = CoinFactory.exchange($scope.transaction);
-                exch.success(function () {
+                var sellMC = CoinFactory.sell($scope.transaction);
+                sellMC.success(function () {
                     location.reload();
                 }).error(function (data, status) {
                     alert(status);

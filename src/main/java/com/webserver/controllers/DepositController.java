@@ -1,7 +1,7 @@
 package com.webserver.controllers;
 
-import com.webserver.domain.TransactionDTO;
-import com.webserver.services.TransactionService;
+import com.webserver.domain.CreditCardTransactionDTO;
+import com.webserver.services.DepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class DepositController {
 
     @Autowired
-    private TransactionService transactionService;
+    private DepositService depositService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void deposit(@RequestBody TransactionDTO transactionDTO) {
-        transactionService.depositMoney(transactionDTO);
+    public void deposit(@RequestBody CreditCardTransactionDTO creditCardTransactionDTO) {
+        depositService.depositMoney(creditCardTransactionDTO);
     }
 
 }

@@ -3,19 +3,13 @@ package com.webserver.domain;
 /**
  * Created by Marin on 6/24/2017.
  */
-public class TransactionDTO {
+public class CreditCardTransactionDTO {
 
     private CreditCardDTO card;
     private double amount;
     private int userId;
 
-    public TransactionDTO(CreditCardDTO card, double amount, int userId) {
-        this.card = card;
-        this.amount = amount;
-        this.userId = userId;
-    }
-
-    public TransactionDTO() {
+    public CreditCardTransactionDTO() {
     }
 
     public int getUserId() {
@@ -44,7 +38,7 @@ public class TransactionDTO {
 
     @Override
     public String toString() {
-        return "TransactionDTO{" +
+        return "CreditCardTransactionDTO{" +
                 "card=" + card +
                 ", userId=" + userId +
                 ", amount=" + amount +

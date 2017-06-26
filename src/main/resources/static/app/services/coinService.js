@@ -8,8 +8,12 @@
                 return $http.get(config.API_URL + '/price/');
             };
 
-            var privateExchange = function (transaction) {
-                return $http.post(config.API_URL + '/transaction', transaction);
+            var privateBuy = function (transaction) {
+                return $http.post(config.API_URL + '/transaction/buy', transaction);
+            };
+
+            var privateSell = function (transaction) {
+                return $http.post(config.API_URL + '/transaction/sell', transaction);
             };
 
             return {
@@ -17,8 +21,12 @@
                     return privateLatestPrice();
                 },
 
-                exchange: function (transaction) {
-                    return privateExchange(transaction);
+                buy: function(transaction) {
+                    return privateBuy(transaction);
+                },
+
+                sell: function (transaction) {
+                    return privateSell(transaction);
                 }
             }
         }]);

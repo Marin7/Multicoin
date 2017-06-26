@@ -1,4 +1,4 @@
-package com.webserver.services;
+package com.webserver.transactions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -13,6 +13,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
@@ -28,28 +29,27 @@ import java.util.Date;
 /**
  * Created by Marin on 6/24/2017.
  */
+@Component
 public class TransferManager {
 
     private final CreditCardDTO multicoinCreditCard = new CreditCardDTO();
 
-    public boolean transferMoneyFromCreditCard(CreditCardDTO creditCard, double amount) {
+    public void transferMoneyFromCreditCard(CreditCardDTO creditCard, double amount) {
         try {
             HttpResponse response = transferMoney(creditCard, multicoinCreditCard, amount);
 //        return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
         } catch (SignatureException | IOException | CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
-    public boolean transferMoneyToCreditCard(CreditCardDTO creditCard, double amount) {
+    public void transferMoneyToCreditCard(CreditCardDTO creditCard, double amount) {
         try {
             HttpResponse response = transferMoney(multicoinCreditCard, creditCard, amount);
 //            return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
         } catch (SignatureException | IOException | CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
-        return true;
     }
 
     public HttpResponse transferMoney(CreditCardDTO sourceCreditCard, CreditCardDTO destCreditCardDTO, double amount)

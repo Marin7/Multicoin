@@ -3,10 +3,13 @@ package com.webserver.services;
 import com.webserver.domain.UserDTO;
 import com.webserver.exceptions.UserException;
 import com.webserver.models.User;
+import com.webserver.multichain.MultichainManager;
 import com.webserver.repositories.UserRepository;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,7 +23,10 @@ public class UserService {
     @Autowired
     private UserRepository usrRepository;
 
-    public UserDTO findUserById(int userId) {
+    @Autowired
+    private MultichainManager multichainManager;
+
+    public UserDTO findUserById(int userId) throws IOException, JSONException {
         User usr = usrRepository.findById(userId);
         if (usr == null) {
             throw new UserException("No user with id: " + userId);
@@ -32,6 +38,7 @@ public class UserService {
                 .email(usr.getEmail())
                 .password(usr.getPassword())
                 .userName(usr.getUsername())
+                .coins(multichainManager.getUserBalance(usr.getMulticoinAddress()))
                 .create();
         return dto;
     }
@@ -44,28 +51,11 @@ public class UserService {
 
         UserDTO dto = new UserDTO.Builder()
                 .id(usr.getId())
-                .dollars(usr.getDollars())
                 .email(usr.getEmail())
                 .password(usr.getPassword())
                 .userName(usr.getUsername())
                 .create();
         return dto;
-    }
-
-    public List<UserDTO> findAll() {
-        List<User> users = usrRepository.findAll();
-        List<UserDTO> toReturn = new ArrayList<>();
-        for (User user : users) {
-            UserDTO dto = new UserDTO.Builder()
-                    .id(user.getId())
-                    .userName(user.getUsername())
-                    .password(user.getPassword())
-                    .email(user.getEmail())
-                    .dollars(user.getDollars())
-                    .create();
-            toReturn.add(dto);
-        }
-        return toReturn;
     }
 
     public int create(UserDTO userDTO) {
@@ -80,6 +70,13 @@ public class UserService {
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getUsername());
 
+        MultichainManager multichainManager = new MultichainManager();
+        try {
+            String multichainAddress = multichainManager.createNewAddress();
+            user.setMulticoinAddress(multichainAddress);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         User usr = usrRepository.save(user);
         return usr.getId();
     }
