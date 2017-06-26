@@ -27,7 +27,7 @@ public class TransactionService {
     @Autowired
     private MultichainManager multichainManager;
 
-    public void buy(MulticoinTransactionDTO multicoinTransactionDTO) {
+    public void buy(MulticoinTransactionDTO multicoinTransactionDTO) throws IOException, JSONException {
         User user = userRepository.findById(multicoinTransactionDTO.getUserId());
         double amount = multicoinTransactionDTO.getAmount();
         if (user.getDollars() < amount) {

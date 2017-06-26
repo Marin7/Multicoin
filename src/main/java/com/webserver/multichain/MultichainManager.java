@@ -17,6 +17,7 @@ public class MultichainManager {
 
     private static final String CHAIN_NAME = "chain3";
     private static final String PATH = "C:\\Users\\Marin\\Facultate\\Multicoin\\src\\main\\resources\\multichain-cli.exe";
+    private static final String MULTICHAIN_ADDRESS = "18U8sWWCaxYV7zPuX3u8KJhwspctjFhALq6BF6";
 
     public String createNewAddress() throws IOException {
         Runtime runtime = Runtime.getRuntime();
@@ -58,10 +59,41 @@ public class MultichainManager {
         return qty;
     }
 
-    public void sendMulticoinsToAddress(String address, double amount) {
+    public void sendMulticoinsToAddress(String multichainAddress, double amount) throws IOException, JSONException {
+        Runtime runtime = Runtime.getRuntime();
+        String multichainCommand = "send";
+        String command = PATH + " " + CHAIN_NAME + " " + multichainCommand + " " + multichainAddress + " " + amount;
+
+        Process process = runtime.exec(command);
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String result = "";
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            result = result.concat(s + "\n");
+        }
+
+        System.out.println(result);
+
+        process.destroy();
     }
 
-    public void sendMulticoinsFromAddress(String address, double amount) {
-    }
+    public void sendMulticoinsFromAddress(String multichainAddress, double amount) throws IOException {
+        Runtime runtime = Runtime.getRuntime();
+        String multichainCommand = "sendfrom ";
+        String command = PATH + " " + CHAIN_NAME + " " + multichainCommand + " " + multichainAddress + " " + MULTICHAIN_ADDRESS + " " + amount;
 
+        Process process = runtime.exec(command);
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String result = "";
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            result = result.concat(s + "\n");
+        }
+
+        System.out.println(result);
+
+        process.destroy();
+    }
 }

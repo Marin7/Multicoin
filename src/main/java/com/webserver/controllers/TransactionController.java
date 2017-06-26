@@ -20,7 +20,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST)
-    public void buy(@RequestBody MulticoinTransactionDTO multicoinTransactionDTO) {
+    public void buy(@RequestBody MulticoinTransactionDTO multicoinTransactionDTO) throws IOException, JSONException {
         transactionService.buy(multicoinTransactionDTO);
     }
 
