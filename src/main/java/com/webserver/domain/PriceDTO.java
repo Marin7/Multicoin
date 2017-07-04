@@ -7,7 +7,6 @@ import java.util.Date;
  */
 public class PriceDTO {
 
-    private Integer id;
     private Date date;
     private Double buyPrice;
     private Double sellPrice;
@@ -15,19 +14,10 @@ public class PriceDTO {
     public PriceDTO() {
     }
 
-    public PriceDTO(Integer id, Date date, Double buyPrice, double sellPrice) {
-        this.id = id;
+    public PriceDTO(Date date, Double buyPrice, double sellPrice) {
         this.date = date;
         this.buyPrice = buyPrice;
         this.sellPrice = sellPrice;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Date getDate() {
@@ -56,15 +46,9 @@ public class PriceDTO {
 
     public static class Builder {
 
-        private Integer nestedId;
         private Date nestedDate;
         private Double nestedBuyPrice;
         private Double nestedSellPrice;
-
-        public Builder id(Integer id) {
-            this.nestedId = id;
-            return this;
-        }
 
         public Builder date(Date date) {
             this.nestedDate = date;
@@ -81,7 +65,7 @@ public class PriceDTO {
         }
 
         public PriceDTO create() {
-            return new PriceDTO(nestedId, nestedDate, nestedBuyPrice, nestedSellPrice);
+            return new PriceDTO(nestedDate, nestedBuyPrice, nestedSellPrice);
         }
 
     }

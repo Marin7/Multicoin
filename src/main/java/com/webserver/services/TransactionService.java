@@ -1,9 +1,9 @@
 package com.webserver.services;
 
-import com.webserver.domain.CreditCardTransactionDTO;
 import com.webserver.domain.MulticoinTransactionDTO;
+import com.webserver.exceptions.UserException;
 import com.webserver.models.User;
-import com.webserver.multichain.MultichainManager;
+import com.webserver.transactions.MultichainManager;
 import com.webserver.repositories.UserRepository;
 import com.webserver.transactions.ExchangeManager;
 import org.json.JSONException;
@@ -31,11 +31,11 @@ public class TransactionService {
         User user = userRepository.findById(multicoinTransactionDTO.getUserId());
         double amount = multicoinTransactionDTO.getAmount();
         if (user.getDollars() < amount) {
-            throw new RuntimeException("User doesn't have enough funds");
+            throw new UserException("User doesn't have enough funds");
         }
         double price = exchangeManager.getBuyPrice();
-        double multicoins = price * amount;
-        exchangeManager.buyCoins(amount);
+        double multicoins = amount / price;
+        exchangeManager.buyCoins(multicoins);
         user.setDollars(user.getDollars() - amount);
         userRepository.save(user);
         multichainManager.sendMulticoinsToAddress(user.getMulticoinAddress(), multicoins);

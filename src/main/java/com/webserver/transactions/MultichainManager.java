@@ -1,4 +1,4 @@
-package com.webserver.multichain;
+package com.webserver.transactions;
 
 import org.json.JSONArray;
 import org.json.JSONException;

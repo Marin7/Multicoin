@@ -3,7 +3,7 @@ package com.webserver.services;
 import com.webserver.domain.UserDTO;
 import com.webserver.exceptions.UserException;
 import com.webserver.models.User;
-import com.webserver.multichain.MultichainManager;
+import com.webserver.transactions.MultichainManager;
 import com.webserver.repositories.UserRepository;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
