@@ -10,16 +10,41 @@
 </head>
 
 <body>
+<style id="navbar">
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    /* Change the link color to #111 (black) on hover */
+    li a:hover {
+        background-color: #111;
+    }
+</style>
 <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" cardId="register" href="#/register">Register</a>
-            <a class="navbar-brand" cardId="login" href="#/login">Login</a>
-            <a class="navbar-brand" cardId="logout" href="#/logout">Logout</a>
-            <a class="navbar-brand" cardId="coin" href="#/coin">Coin</a>
-            <a class="navbar-brand" cardId="deposit" href="#/deposit">Deposit/Withdraw</a>
-        </div>
-    </div>
+    <ul>
+        <li><a id="homepage" href="#/">Home</a></li>
+        <li><a id="register" href="#/register">Register</a></li>
+        <li><a id="login" href="#/login">Login</a></li>
+        <li><a id="logout" href="#/logout">Logout</a></li>
+        <li><a id="coin" href="#/coin">Coin</a></li>
+        <li><a id="deposit" href="#/deposit">Deposit/Withdraw</a></li>
+    </ul>
 </div>
 <br/>
 <br/>
@@ -61,11 +86,13 @@
             $('#login').css("display", "none");
             $('#logout').css("display", "block");
             $('#deposit').css("display", "block");
+            $('#coin').css("display", "block");
         } else {
             $('#logout').css("display", "none");
             $('#deposit').css("display", "none");
             $('#register').css("display", "block");
             $('#login').css("display", "block");
+            $('#coin').css("display", "none");
         }
     });
 </script>

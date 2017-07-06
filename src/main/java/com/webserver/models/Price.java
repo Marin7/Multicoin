@@ -12,28 +12,24 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "price")
 public class Price {
 
-    private static final long serialVersionUID = 1L;
-
     private Integer id;
     private Date date;
-    private Double dollars;
+    private Double buyPrice;
+    private Double sellPrice;
 
     public Price() {
     }
 
-    public Price(Integer id, Date date, Double dollars) {
+    public Price(Integer id, Date date, Double buyPrice, Double sellPrice) {
         this.id = id;
         this.date = date;
-        this.dollars = dollars;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+        this.buyPrice = buyPrice;
+        this.sellPrice = sellPrice;
     }
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -42,7 +38,7 @@ public class Price {
         this.id = id;
     }
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     public Date getDate() {
         return date;
     }
@@ -51,13 +47,22 @@ public class Price {
         this.date = date;
     }
 
-    @Column(name = "dollars", nullable = false)
-    public Double getDollars() {
-        return dollars;
+    @Column(name = "buyPrice")
+    public Double getBuyPrice() {
+        return buyPrice;
     }
 
-    public void setDollars(Double dollars) {
-        this.dollars = dollars;
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
+    }
+
+    @Column(name = "sellPrice")
+    public Double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(Double sellPrice) {
+        this.sellPrice = sellPrice;
     }
 
     @Override
@@ -65,7 +70,30 @@ public class Price {
         return "Price{" +
                 "id=" + id +
                 ", date=" + date +
-                ", dollars=" + dollars +
+                ", buyPrice=" + buyPrice +
+                ", sellPrice=" + sellPrice +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Price price = (Price) o;
+
+        if (id != null ? !id.equals(price.id) : price.id != null) return false;
+        if (date != null ? !date.equals(price.date) : price.date != null) return false;
+        if (buyPrice != null ? !buyPrice.equals(price.buyPrice) : price.buyPrice != null) return false;
+        return sellPrice != null ? sellPrice.equals(price.sellPrice) : price.sellPrice == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (buyPrice != null ? buyPrice.hashCode() : 0);
+        result = 31 * result + (sellPrice != null ? sellPrice.hashCode() : 0);
+        return result;
     }
 }

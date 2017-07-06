@@ -1,8 +1,37 @@
+<style>
+    body {
+        background-color: darkslategrey;
+    }
+
+    h1 {
+        color: whitesmoke;
+        text-align: center;
+    }
+
+    h2 {
+        color: white;
+        font-size: 30px;
+    }
+
+    p {
+        color: white;
+        font-size: 30px;
+    }
+
+    form {
+        color: white;
+        font-size: 25px;
+    }
+
+    button {
+        color: darkslategray;
+    }
+</style>
 <div ng-controller="CoinController">
 
     <form>
-        You currently own approx. {{userCoins}} coins <br>
-        You currently have deposited {{userDollars}} dollars <br>
+        You currently own approx. {{userCoins}} Multicoins <br>
+        You currently have deposited {{userDollars}} USD <br>
     </form>
     <br>
     <form>
@@ -12,7 +41,7 @@
     </form>
     <br>
     <form>
-        Introduce the amount of dollars to spend :<input type="number" step="0.01" min="0" ng-model="amountDollars"><br>
+        Introduce the amount of USD to spend :<input type="number" step="0.01" min="0" ng-model="amountDollars"><br>
         <button ng-click="buy()">BUY</button>
 
     </form>

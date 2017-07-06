@@ -3,6 +3,7 @@ package com.webserver.services;
 import com.webserver.domain.MulticoinTransactionDTO;
 import com.webserver.exceptions.UserException;
 import com.webserver.models.User;
+import com.webserver.repositories.PriceRepository;
 import com.webserver.transactions.MultichainManager;
 import com.webserver.repositories.UserRepository;
 import com.webserver.transactions.ExchangeManager;
@@ -27,13 +28,16 @@ public class TransactionService {
     @Autowired
     private MultichainManager multichainManager;
 
+    @Autowired
+    private PriceRepository priceRepository;
+
     public void buy(MulticoinTransactionDTO multicoinTransactionDTO) throws IOException, JSONException {
         User user = userRepository.findById(multicoinTransactionDTO.getUserId());
         double amount = multicoinTransactionDTO.getAmount();
         if (user.getDollars() < amount) {
             throw new UserException("User doesn't have enough funds");
         }
-        double price = exchangeManager.getBuyPrice();
+        double price = priceRepository.findTopByOrderByDateDesc().getBuyPrice();
         double multicoins = amount / price;
         exchangeManager.buyCoins(multicoins);
         user.setDollars(user.getDollars() - amount);
@@ -46,9 +50,9 @@ public class TransactionService {
         double amount = multicoinTransactionDTO.getAmount();
         double currentAmount = multichainManager.getUserBalance(user.getMulticoinAddress());
         if (amount > currentAmount) {
-            throw new RuntimeException("Not enough Multicoins");
+            throw new UserException("Not enough Multicoins");
         }
-        double price = exchangeManager.getSellPrice();
+        double price = priceRepository.findTopByOrderByDateDesc().getSellPrice();
         double dollars = price * amount;
         exchangeManager.sellCoins(amount);
         user.setDollars(user.getDollars() + dollars);

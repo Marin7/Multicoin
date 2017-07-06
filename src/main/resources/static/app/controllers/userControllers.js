@@ -35,6 +35,8 @@
                 var promise = UserFactory.register($scope.user);
                 promise.success(function (data) {
                     $scope.user = data;
+                    window.location = "#/";
+                    location.reload();
                 }).error(function (data, status) {
                     alert(status);
                 });
@@ -65,6 +67,7 @@
     usersModule.controller('LogoutUserController', [
         function () {
             sessionStorage.setItem('loggedOn', 'false');
+            sessionStorage.setItem('user_id', 0);
             window.location = "#/";
             location.reload();
         }]);

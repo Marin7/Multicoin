@@ -1,5 +1,6 @@
 package com.webserver.transactions;
 
+import javafx.util.Pair;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,12 +28,16 @@ public class ExchangeManager {
 
     private static final String key = "DAA9AD52FD11E65D8C1131FF323363CE";
     private static final String secret = "5FB0EDB6FAADF61C058912D07C05FA05";
+
     private final HashMap<String, Double> coins = new HashMap<String, Double>() {
         {
-            //put("btc", 0.0005);
-//            put("eth", 0.001);
-//            put("ltc", 0.005);
-            put("doge", 300.0);
+            put("btc", 0.001);//Bitcoin
+            put("eth", 0.005);//Ethereum
+            put("xvg", 250.0);//Verge
+            put("ltc", 0.02);//Litecoin
+            put("dash", 0.005);//Dash
+            put("doge", 400.0);//Dogecoin
+            put("omni", 0.015);//OMNI
         }
     };
 
@@ -93,12 +98,8 @@ public class ExchangeManager {
         CloseableHttpResponse response = httpClient.execute(get);
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        String result = "";
-        String s;
-        while ((s = stdInput.readLine()) != null) {
-            result = result.concat(s + "\n");
-        }
-        System.out.println("TICKER: " + result);
+        String result = stdInput.readLine();
+        System.out.println(coin + " TICKER: " + result);
 
         return new JSONObject(result);
     }
@@ -111,20 +112,14 @@ public class ExchangeManager {
         return getCoinTicker(coin).getJSONObject("ticker").getDouble("low");
     }
 
-    public double getBuyPrice() throws IOException, JSONException {
-        double price = 0d;
+    public Pair<Double, Double> getPrice() throws IOException, JSONException {
+        double buyPrice = 0d, sellPrice = 0d;
         for (String coin : coins.keySet()) {
-            price += getCoinBuyPrice(coin) * coins.get(coin);
+            JSONObject jsonObject = getCoinTicker(coin).getJSONObject("ticker");
+            buyPrice += jsonObject.getDouble("high") * coins.get(coin);
+            sellPrice += jsonObject.getDouble("low") * coins.get(coin);
         }
-        return price;
-    }
-
-    public double getSellPrice() throws IOException, JSONException {
-        double price = 0d;
-        for (String coin : coins.keySet()) {
-            price += getCoinSellPrice(coin) * coins.get(coin);
-        }
-        return price;
+        return new Pair<>(buyPrice, sellPrice);
     }
 
 }
