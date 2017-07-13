@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 public class MultichainManager {
 
     private static final String CHAIN_NAME = "chain3";
-    private static final String PATH = "C:\\Users\\Marin\\Facultate\\Multicoin\\src\\main\\resources\\multichain-cli.exe";
+    private static final String PATH = "src/main/resources/multichain-cli.exe";
     private static final String MULTICHAIN_ADDRESS = "18U8sWWCaxYV7zPuX3u8KJhwspctjFhALq6BF6";
 
     public String createNewAddress() throws IOException {

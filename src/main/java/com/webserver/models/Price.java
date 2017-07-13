@@ -12,9 +12,18 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "price")
 public class Price {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Integer id;
+
+    @Column(name = "date")
     private Date date;
+
+    @Column(name = "buyPrice")
     private Double buyPrice;
+
+    @Column(name = "sellPrice")
     private Double sellPrice;
 
     public Price() {
@@ -27,9 +36,6 @@ public class Price {
         this.sellPrice = sellPrice;
     }
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -38,7 +44,6 @@ public class Price {
         this.id = id;
     }
 
-    @Column(name = "date")
     public Date getDate() {
         return date;
     }
@@ -47,7 +52,6 @@ public class Price {
         this.date = date;
     }
 
-    @Column(name = "buyPrice")
     public Double getBuyPrice() {
         return buyPrice;
     }
@@ -56,7 +60,6 @@ public class Price {
         this.buyPrice = buyPrice;
     }
 
-    @Column(name = "sellPrice")
     public Double getSellPrice() {
         return sellPrice;
     }

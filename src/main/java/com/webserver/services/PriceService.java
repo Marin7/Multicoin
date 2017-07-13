@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 /**
@@ -45,6 +47,7 @@ public class PriceService {
                 prices = exchangeManager.getPrice();
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
+                return;
             }
             Price price = new Price();
             price.setBuyPrice(prices.getKey());

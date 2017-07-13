@@ -10,14 +10,27 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User implements java.io.Serializable {
+public class User {
 
-	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private Integer id;
+
+	@Column(name = "username", nullable = false)
 	private String username;
+
+	@Column(name = "email", nullable = false, length = 200)
 	private String email;
+
+	@Column(name = "dollars", nullable = false)
+
 	private Double dollars;
+
+	@Column(name = "password", nullable = false)
 	private String password;
+
+	@Column(name = "multicoin_address", nullable = false)
 	private String multicoinAddress;
 
 	public User() {
@@ -32,9 +45,6 @@ public class User implements java.io.Serializable {
 		this.multicoinAddress = multicoinAddress;
 	}
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
 	}
@@ -43,7 +53,6 @@ public class User implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "email", nullable = false, length = 200)
 	public String getEmail() {
 		return this.email;
 	}
@@ -52,7 +61,6 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "dollars", nullable = false)
 	public Double getDollars() {
 		return dollars;
 	}
@@ -61,7 +69,6 @@ public class User implements java.io.Serializable {
 		this.dollars = dollars;
 	}
 
-	@Column(name = "username", nullable = false)
 	public String getUsername() {
 		return username;
 	}
@@ -70,7 +77,6 @@ public class User implements java.io.Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "password", nullable = false)
 	public String getPassword() {
 		return password;
 	}
@@ -79,7 +85,6 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "multicoin_address", nullable = false)
 	public String getMulticoinAddress() {
 		return multicoinAddress;
 	}
