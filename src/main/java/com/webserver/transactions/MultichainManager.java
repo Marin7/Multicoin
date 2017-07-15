@@ -61,8 +61,9 @@ public class MultichainManager {
 
     public void sendMulticoinsToAddress(String multichainAddress, double amount) throws IOException, JSONException {
         Runtime runtime = Runtime.getRuntime();
-        String multichainCommand = "send";
-        String command = PATH + " " + CHAIN_NAME + " " + multichainCommand + " " + multichainAddress + " " + amount;
+        String multichainCommand = "sendfrom";
+        String command = PATH + " " + CHAIN_NAME + " " + multichainCommand + " " + MULTICHAIN_ADDRESS + " " +
+                multichainAddress + " " + amount;
 
         Process process = runtime.exec(command);
 

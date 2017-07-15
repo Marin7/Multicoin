@@ -42,7 +42,7 @@ public class PriceService {
         @Scheduled(fixedRate = 120000)
         public void updatePrices() {
             System.out.println("Update price");
-            Pair<Double, Double> prices = null;
+            Pair<BigDecimal, BigDecimal> prices = null;
             try {
                 prices = exchangeManager.getPrice();
             } catch (IOException | JSONException e) {
@@ -50,8 +50,8 @@ public class PriceService {
                 return;
             }
             Price price = new Price();
-            price.setBuyPrice(prices.getKey());
-            price.setSellPrice(prices.getValue());
+            price.setBuyPrice(prices.getKey().setScale(2).doubleValue());
+            price.setSellPrice(prices.getValue().setScale(2).doubleValue());
             price.setDate(new Date());
             priceRepository.save(price);
         }
