@@ -27,7 +27,7 @@ import java.util.Properties;
  * Created by Marin on 6/18/2017.
  */
 @Configuration
-@PropertySource(value = { "application.properties" })
+@PropertySource(value = {"application.properties"})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.webserver.repositories")
 public class PersistenceConfig {
@@ -50,7 +50,7 @@ public class PersistenceConfig {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(Boolean.TRUE);
-        vendorAdapter.setShowSql(Boolean.TRUE);
+        vendorAdapter.setShowSql(Boolean.FALSE);
 
         factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);

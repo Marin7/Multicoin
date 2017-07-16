@@ -39,9 +39,12 @@ public class TransactionService {
         }
         double price = priceRepository.findTopByOrderByDateDesc().getBuyPrice();
         double multicoins = amount / price;
+        System.out.println("Will buy " + multicoins + " Multicoins for user " + user.getUsername());
         exchangeManager.buyCoins(multicoins);
         user.setDollars(user.getDollars() - amount);
+        System.out.println("New user balance " + user.getUsername() + ": " + user.getDollars());
         userRepository.save(user);
+        System.out.println("Send " + multicoins + " Multicoins to user " + user.getUsername() + " address: " + user.getMulticoinAddress());
         multichainManager.sendMulticoinsToAddress(user.getMulticoinAddress(), multicoins);
     }
 
@@ -54,10 +57,13 @@ public class TransactionService {
         }
         double price = priceRepository.findTopByOrderByDateDesc().getSellPrice();
         double dollars = price * amount;
+        System.out.println("Will sell " + amount + " Multicoins for user " + user.getUsername());
         exchangeManager.sellCoins(amount);
         user.setDollars(user.getDollars() + dollars);
         userRepository.save(user);
+        System.out.println("New user balance " + user.getUsername() + ": " + user.getDollars());
         multichainManager.sendMulticoinsFromAddress(user.getMulticoinAddress(), amount);
+        System.out.println("Send " + amount + " Multicoins from user " + user.getUsername() + " address: " + user.getMulticoinAddress());
     }
 
 }

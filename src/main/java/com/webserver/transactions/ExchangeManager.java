@@ -49,6 +49,7 @@ public class ExchangeManager {
         for (String coin : coins.keySet()) {
             try {
                 tradeCoins(String.valueOf(BigDecimal.valueOf((amount * coins.get(coin)))), String.valueOf(getCoinBuyPrice(coin)), coin, "usd");
+                System.out.println("Bought " + amount + " " + coin);
             } catch (InvalidKeyException | NoSuchAlgorithmException | IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -59,6 +60,7 @@ public class ExchangeManager {
         for (String coin : coins.keySet()) {
             try {
                 tradeCoins(String.valueOf(BigDecimal.valueOf(amount * coins.get(coin))), String.valueOf(getCoinSellPrice(coin)), "usd", coin);
+                System.out.println("Sold " + amount + " " + coin);
             } catch (InvalidKeyException | NoSuchAlgorithmException | IOException | JSONException e) {
                 e.printStackTrace();
             }
